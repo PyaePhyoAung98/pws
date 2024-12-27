@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hello World App</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+
+<body>
+  <h1>Hello, World!</h1>
+  <p>This is a simple PWA example.</p>
+  <!-- Add to Home Screen Button -->
+  <button onclick="openInChrome()">Open in Chrome</button>
+
+  <button id="install-button" style="display: none;">Add to Home Screen</button>
+
+  <script>
+    let deferredPrompt;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('install-button').style.display = 'block';
+    });
+
+    document.getElementById('install-button').addEventListener('click', () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === 'accepted') {
+            console.log('User accepted the A2HS prompt');
+          } else {
+            console.log('User dismissed the A2HS prompt');
+          }
+          deferredPrompt = null;
+        });
+      }
+    });
+    function openInChrome() {
+      const url = "https://yourwebsite.com";
+      // Chrome Intent ကို အသုံးပြုပြီး ဖွင့်ရန်
+      window.location.href = `intent:${url}#Intent;package=com.android.chrome;end`;
+    }
+  </script>
+</body>
+
+</html>

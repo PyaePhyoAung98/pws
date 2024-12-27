@@ -12,9 +12,7 @@
   <h1>Hello, World!</h1>
   <p>This is a simple PWA example.</p>
   <!-- Add to Home Screen Button -->
-  <a href="https://yourwebsite.com" target="_blank" rel="noopener noreferrer">Open in Chrome</a>
-
-  <button onclick="openInChrome()">Open in Chrome</button>
+  <button id="openInChromeBtn">Open in Chrome</button>
 
   <button id="install-button" style="display: none;">Add to Home Screen</button>
 
@@ -40,11 +38,23 @@
         });
       }
     });
-    function openInChrome() {
-      const url = "https://yourwebsite.com";
-      // Chrome Intent ကို အသုံးပြုပြီး ဖွင့်ရန်
-      window.location.href = `intent:${url}#Intent;package=com.android.chrome;end`;
-    }
+ document.getElementById("openInChromeBtn").addEventListener("click", function () {
+      // Chrome မှာ ဖွင့်ချင်တဲ့ URL
+      const targetURL = "https://pyaephyoaung98.github.io/pws/";
+      // Android Chrome Package အတွက် Intent URL
+      const chromeIntentUrl = `intent://pyaephyoaung98.github.io/pws/#Intent;scheme=https;package=com.android.chrome;end`;
+
+      // ၁) intent:// URL ကို ထုတ်ပစ်သွားမယ်
+      window.location.replace(chromeIntentUrl);
+
+      // ၂) setTimeout နဲ့ Fallback ပြုလုပ်
+      // အချို့ Browser တွေမှာ intent:// မဖွင့်နိုင်တဲ့အခါ 
+      // seconds ခုဆိုပြီး normal URL ကို ပြန်ဖွင့်အောင်လုပ်ထားမယ်
+      setTimeout(function () {
+        window.location.replace(targetURL);
+      }, 2000);
+    });
+
   </script>
 </body>
 

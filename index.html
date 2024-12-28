@@ -12,7 +12,7 @@
   <h1>Hello, World!</h1>
   <p>This is a simple PWA example.</p>
   <!-- Add to Home Screen Button -->
-  <button id="openInChromeBtn" style="display: none;">Open in Chrome</button>
+  <button id="openInChromeBtn">Open in Chrome</button>
 
   <button id="install-button" style="display: none;">Add to Home Screen</button>
 
@@ -56,47 +56,24 @@
  //    });
 
 
-    function isChromeBrowser() {
-  // 1) Checks if "Chrome" is in userAgent
-  // 2) Checks if "Google Inc" is the vendor
-  // 3) Excludes other Chromium-based browsers by ensuring no "Edge"/"Edg" or "OPR" (Opera)
-  const ua = navigator.userAgent;
-  const vendor = navigator.vendor;
+ 
+   document.getElementById("openInChromeBtn").addEventListener("click", function () {
+      // Chrome မှာ ဖွင့်ချင်တဲ့ URL
+      const targetURL = "https://pyaephyoaung98.github.io/pws/";
+      // Android Chrome Package အတွက် Intent URL
+      const chromeIntentUrl = `intent://pyaephyoaung98.github.io/pws/#Intent;scheme=https;package=com.android.chrome;end`;
 
-  const isChrome = ua.includes("Chrome") &&
-                   vendor && vendor.includes("Google Inc") &&
-                   !ua.includes("Edge") &&
-                   !ua.includes("OPR") &&
-                   !ua.includes("OPERA");
-
-  return isChrome;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  const openInChromeBtn = document.getElementById("openInChromeBtn");
-
-  // If the user is NOT in Chrome, show "Open in Chrome" button
-  if (!isChromeBrowser()) {
-    openInChromeBtn.style.display = "inline-block";
-
-    // Optional: Add a click event to open your site in Chrome via intent on Android
-    openInChromeBtn.addEventListener("click", () => {
-      const targetURL = "https://example.com";
-      const chromeIntentUrl = `intent://example.com/#Intent;scheme=https;package=com.android.chrome;end`;
-
-      // Attempt to open via intent on Android
+      // ၁) intent:// URL ကို ထုတ်ပစ်သွားမယ်
       window.location.replace(chromeIntentUrl);
 
-      // Fallback after 2 seconds if it fails
-      setTimeout(() => {
+      // ၂) setTimeout နဲ့ Fallback ပြုလုပ်
+      // အချို့ Browser တွေမှာ intent:// မဖွင့်နိုင်တဲ့အခါ 
+      // seconds ခုဆိုပြီး normal URL ကို ပြန်ဖွင့်အောင်လုပ်ထားမယ်
+      setTimeout(function () {
         window.location.replace(targetURL);
       }, 2000);
     });
-  } else {
-    // Already in Chrome, hide the button
-    openInChromeBtn.style.display = "none";
-  }
-});
+
 
     
   </script>
